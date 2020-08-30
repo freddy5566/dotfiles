@@ -1,5 +1,6 @@
-export TERM="xterm-256color"
 export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+export TERM="xterm-256color"
+export GPG_TTY=$(tty)
 
 [[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
 
