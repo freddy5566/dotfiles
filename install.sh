@@ -34,8 +34,13 @@ applyzsh() {
         mv $HOME/.zshrc $HOME/.zshrc.bak
     fi
 
+    if [ -f $HOME/.zimrc]; then
+        mv $HOME/.zimrc $HOME/.zimrc.bak
+    fi
+
     echo "export DOTFILES=$INSTALL_DIRECTORY" >>$HOME/.zshrc
     echo "source $INSTALL_DIRECTORY/zsh/.zshrc" >>$HOME/.zshrc
+    echo "source $INSTALL_DIRECTORY/zsh/.zimrc" >>$HOME/.zimrc
     echo "DEFAULT_USER=$USER" >>$HOME/.zshrc
 }
 
