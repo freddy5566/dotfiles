@@ -34,7 +34,7 @@ applyzsh() {
         mv $HOME/.zshrc $HOME/.zshrc.bak
     fi
 
-    if [ -f $HOME/.zimrc]; then
+    if [ -f $HOME/.zimrc ]; then
         mv $HOME/.zimrc $HOME/.zimrc.bak
     fi
 
