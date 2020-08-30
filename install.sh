@@ -28,17 +28,15 @@ applyzsh() {
     fi
 
     # Install zim
-    if ! [ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom} ]; then
-        export RUNZSH=no
-        curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+    curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+
+    if [ -f $HOME/.zshrc ]; then
+        mv $HOME/.zshrc $HOME/.zshrc.bak
     fi
 
-    if [ -f $HOME/.zimrc ]; then
-        mv $HOME/.zimrc $HOME/.zimrc.bak
-    fi
-    echo "export DOTFILES=$INSTALL_DIRECTORY" >>$HOME/.zimrc
-    echo "source $INSTALL_DIRECTORY/zim/.zimrc" >>$HOME/.zimrc
-    echo "DEFAULT_USER=$USER" >>$HOME/.zimrc
+    echo "export DOTFILES=$INSTALL_DIRECTORY" >>$HOME/.zshrc
+    echo "source $INSTALL_DIRECTORY/zsh/.zshrc" >>$HOME/.zshrc
+    echo "DEFAULT_USER=$USER" >>$HOME/.zshrc
 }
 
 applyvim() {
