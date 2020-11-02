@@ -5,6 +5,8 @@ alias la='ls -a'
 alias ll='ls -alh'
 alias please='sudo'
 alias poke='touch'
-
-# git
 alias gst='git status'
+
+# app
+alias typora='open -a typora'
+alias wget='aria2c -x 16 -s 16 --retry-wait=1'
