@@ -43,12 +43,15 @@
       context                   # user@host
       command_execution_time    # previous command duration
       newline                   # \n
+      anaconda                  # python anaconda environment
       virtualenv                # python virtual environment
       prompt_char               # prompt symbol
   )
 
   # Right prompt segments.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
+  typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND='blue'
+  typeset -g POWERLEVEL9K_ANACONDA_CONTENT_EXPANSION='(${${CONDA_PROMPT_MODIFIER#\(}%\) })'
 
   # Basic style options that define the overall prompt look.
   typeset -g POWERLEVEL9K_BACKGROUND=                            # transparent background
