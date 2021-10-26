@@ -7,6 +7,10 @@ nmap ++ <plug>NERDCommenterToggle
 
 let g:NERDSpaceDelims = 2
 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
 
 " open NERDTree automatically
 "autocmd StdinReadPre * let s:std_in=1
