@@ -55,6 +55,20 @@ applyvim() {
     echo "source $INSTALL_DIRECTORY/vim/.vimrc" >>$HOME/.vimrc
 }
 
+applynvim() {
+    # Check vim
+    if ! command -v nvim >/dev/null 2>&1; then
+        echo "nvim is not installed."
+        return $(false)
+    fi
+
+    if [ -f $HOME/.config/nvim/init.vim ]; then
+        mv $HOME/.config/nvim/init.vim $HOME/.config/nvim/init.vim.bak
+    fi
+
+    echo "source $INSTALL_DIRECTORY/nvim/init.vim" >> $HOME/.config/nvim/init.vim
+}
+
 applytmux() {
     # Check tmux
     if ! command -v tmux >/dev/null 2>&1; then
@@ -97,6 +111,11 @@ main() {
     # Apply the config of vim
     if askquestion "Do you want to apply the config of vim?"; then
         applyvim
+    fi
+
+    # Apply the config of neovim
+    if askquestion "Do you want to apply the config of neovim?"; then
+        applynvim
     fi
 
     # Apply the config of tmux
