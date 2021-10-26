@@ -11,7 +11,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'dracula/vim', { 'as': 'dracula'}
 
-Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
+Plug 'vim-airline/vim-airline'
 
 " Initialize plugin system
 call plug#end()
