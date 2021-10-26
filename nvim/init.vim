@@ -54,6 +54,7 @@ set tabstop=2
 set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
+set splitright
 
 colorscheme dracula
 
