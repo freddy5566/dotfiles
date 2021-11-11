@@ -5,6 +5,8 @@ nmap <C-n> :NERDTreeToggle<CR>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
 
+set foldmethod=indent
+
 let g:NERDSpaceDelims = 2
 
 let g:airline#extensions#tabline#enabled = 1
