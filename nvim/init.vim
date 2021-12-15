@@ -6,6 +6,7 @@ vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
 
 set foldmethod=indent
+se mouse+=a
 
 let g:NERDSpaceDelims = 2
 
