@@ -74,6 +74,7 @@ let g:coc_global_extensions = [
   \ 'coc-yaml',
   \ 'coc-pyright',
   \ 'coc-spell-checker',
+  \ 'coc-julia',
   \ ]
 " from readme
 " if hidden is not set, TextEdit might fail.

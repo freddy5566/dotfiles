@@ -14,5 +14,7 @@ Plug 'dracula/vim', { 'as': 'dracula'}
 
 Plug 'vim-airline/vim-airline'
 
+Plug 'JuliaEditorSupport/julia-vim'
+
 " Initialize plugin system
 call plug#end()
