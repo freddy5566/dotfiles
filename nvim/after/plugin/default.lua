@@ -24,6 +24,7 @@ opt.showmode = false -- Do not need to show the mode. We use the statusline inst
 opt.tabstop = 2 -- For tab characters that appear 2-spaces-wide:
 opt.shiftwidth = 2 -- levels of indentation
 opt.foldmethod = "indent" -- Use indentation for folding
+opt.splitright = true -- Split windows on the right side of the screen
 
 -- Highlight on yank
 vim.cmd [[
