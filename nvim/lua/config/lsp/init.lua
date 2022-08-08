@@ -11,17 +11,6 @@ local servers = {
     },
   },
   pyright = {},
-  rust_analyzer = {
-    settings = {
-      ["rust-analyzer"] = {
-        cargo = { allFeatures = true },
-        checkOnSave = {
-          command = "clippy",
-          extraArgs = { "--no-deps" },
-        },
-      },
-    },
-  },
   sumneko_lua = {
     settings = {
       Lua = {
@@ -45,7 +34,6 @@ local servers = {
       },
     },
   },
-  tsserver = {},
   vimls = {},
 }
 
