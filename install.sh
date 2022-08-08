@@ -56,17 +56,13 @@ applyvim() {
 }
 
 applynvim() {
-    # Check vim
+    # Check nvim
     if ! command -v nvim >/dev/null 2>&1; then
         echo "nvim is not installed."
         return $(false)
     fi
 
-    if [ -f $HOME/.config/nvim/init.vim ]; then
-        mv $HOME/.config/nvim/init.vim $HOME/.config/nvim/init.vim.bak
-    fi
-
-    echo "source $INSTALL_DIRECTORY/nvim/init.vim" >> $HOME/.config/nvim/init.vim
+		cd ~/.config && ln -s ./dotfiles/nvim .
 }
 
 applytmux() {
