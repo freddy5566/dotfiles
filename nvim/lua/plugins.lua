@@ -148,7 +148,7 @@ function M.setup()
       "numToStr/Comment.nvim",
       keys = { "gc", "gcc", "gbc" },
       config = function()
-        require("comment").setup()
+        require("Comment").setup()
       end,
     }
 
