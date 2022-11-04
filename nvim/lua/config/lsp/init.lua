@@ -68,7 +68,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 if PLUGINS.nvim_cmp.enabled then
-  capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities) -- for nvim-cmp
+  capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities) -- for nvim-cmp
 end
 
 local opts = {
