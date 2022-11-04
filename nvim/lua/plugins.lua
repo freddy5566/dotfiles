@@ -148,7 +148,7 @@ function M.setup()
       "numToStr/Comment.nvim",
       keys = { "gc", "gcc", "gbc" },
       config = function()
-        require("config.comment").setup()
+        require("comment").setup()
       end,
     }
 
@@ -443,7 +443,7 @@ function M.setup()
         wants = {
           "nvim-lsp-installer",
           "cmp-nvim-lsp",
-          "lua-dev.nvim",
+          "neodev.nvim",
           "vim-illuminate",
           "null-ls.nvim",
           "schemastore.nvim",
