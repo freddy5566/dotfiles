@@ -62,7 +62,7 @@ applynvim() {
         return $(false)
     fi
 
-		cd ~/.config && ln -s ./dotfiles/nvim .
+		cd ~/.config && ln -s ~/.dotfiles/nvim .
 }
 
 applytmux() {
