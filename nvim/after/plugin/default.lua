@@ -21,8 +21,11 @@ opt.signcolumn = "yes" -- Always show sign column
 opt.clipboard = "unnamedplus" -- Access system clipboard
 opt.timeoutlen = 300 --	Time in milliseconds to wait for a mapped sequence to complete.
 opt.showmode = false -- Do not need to show the mode. We use the statusline instead.
-opt.tabstop = 2 -- For tab characters that appear 2-spaces-wide:
+opt.tabstop = 8 -- For tab characters that appear 2-spaces-wide:
+opt.softtabstop = 0
 opt.shiftwidth = 2 -- levels of indentation
+opt.smarttab = true
+opt.expandtab = true
 opt.foldmethod = "indent" -- Use indentation for folding
 opt.splitright = true -- Split windows on the right side of the screen
 
