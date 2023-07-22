@@ -27,19 +27,17 @@ applyzsh() {
         return $(false)
     fi
 
-    # Install zim
-    curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-
     if [ -f $HOME/.zshrc ]; then
         mv $HOME/.zshrc $HOME/.zshrc.bak
     fi
 
-    echo "export DOTFILES=$INSTALL_DIRECTORY" >>$HOME/.zshrc
-    echo "source $INSTALL_DIRECTORY/zsh/.zshrc" >>$HOME/.zshrc
-    echo "source $INSTALL_DIRECTORY/zsh/.zimrc" >>$HOME/.zimrc
-    echo "DEFAULT_USER=$USER" >>$HOME/.zshrc
+    echo "export DOTFILES=$INSTALL_DIRECTORY" >> $HOME/.zshrc
+    echo "source $INSTALL_DIRECTORY/zsh/.zshrc" >> $HOME/.zshrc
     
-    zimfw install
+    cp $INSTALL_DIRECTORY/zsh/.zimrc $HOME
+    cp $INSTALL_DIRECTORY/zsh/.p10k.zsh $HOME
+
+    echo "DEFAULT_USER=$USER" >> $HOME/.zshrc
 }
 
 applyvim() {
