@@ -1,5 +1,5 @@
 #!/bin/sh
-# Dotfiles installer: Ghostty + herdr + zsh + Claude Code (macOS).
+# Dotfiles installer: Ghostty + herdr + zsh + Karabiner + Claude Code (macOS).
 set -eu
 
 REPO_URL="https://github.com/freddy5566/dotfiles"
@@ -47,6 +47,11 @@ if ! brew list --cask font-meslo-lg-nerd-font >/dev/null 2>&1; then
     brew install --cask font-meslo-lg-nerd-font
 fi
 
+if [ ! -d /Applications/Karabiner-Elements.app ]; then
+    info "installing Karabiner-Elements"
+    brew install --cask karabiner-elements
+fi
+
 # herdr
 if ! command -v herdr >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/herdr" ]; then
     info "installing herdr"
@@ -56,6 +61,7 @@ fi
 # Configs
 link "$INSTALL_DIRECTORY/ghostty/config" "$HOME/.config/ghostty/config"
 link "$INSTALL_DIRECTORY/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+link "$INSTALL_DIRECTORY/karabiner/karabiner.json" "$HOME/.config/karabiner/karabiner.json"
 
 # zsh (zim + powerlevel10k): ~/.zshrc sources the repo's zsh/.zshrc
 if command -v zsh >/dev/null 2>&1; then

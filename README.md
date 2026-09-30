@@ -1,6 +1,6 @@
 # dotfiles
 
-My macOS setup: [Ghostty](https://ghostty.org) + [herdr](https://herdr.dev), plus Claude Code settings.
+My macOS setup: [Ghostty](https://ghostty.org) + [herdr](https://herdr.dev), plus Karabiner-Elements and Claude Code settings.
 
 iTerm2, vim, neovim and tmux are no longer used. Their old configs are still in git history.
 
@@ -10,6 +10,7 @@ iTerm2, vim, neovim and tmux are no longer used. Their old configs are still in 
 | --- | --- | --- |
 | `ghostty/config` | `~/.config/ghostty/config` (symlink) | Dracula theme, MesloLGS NF 22, Option as Alt |
 | `herdr/config.toml` | `~/.config/herdr/config.toml` (symlink) | prefix `alt+a`, detach `prefix+d` |
+| `karabiner/karabiner.json` | `~/.config/karabiner/karabiner.json` (symlink) | swaps left Command/Option on two external keyboards (matched by vendor/product ID) |
 | `zsh/` | sourced from `~/.zshrc` | zim + powerlevel10k, aliases and functions |
 | `claude/settings.json` | `~/.claude/settings.json` (copy, only if missing) | model, plugins, marketplaces, TUI mode |
 
@@ -36,7 +37,8 @@ The script installs whatever is missing, then links the configs (existing files 
 2. **Font**: `brew install --cask font-meslo-lg-nerd-font` (the config uses `MesloLGS NF`)
 3. **herdr**: `curl -fsSL https://herdr.dev/install.sh | sh` (installs to `~/.local/bin`; make sure that is on your `PATH`; update later with `herdr update`)
 4. **zsh**: installs [zim](https://zimfw.sh) and appends `export DOTFILES=...` / `source .../zsh/.zshrc` to `~/.zshrc` (the old one is saved as `.zshrc.bak`)
-5. **Claude Code settings**, then `herdr integration install claude` if `claude` is installed
+5. **Karabiner-Elements**: `brew install --cask karabiner-elements`. On first launch, grant it Input Monitoring and the driver/system extension in System Settings → Privacy & Security, or the key swaps won't apply.
+6. **Claude Code settings**, then `herdr integration install claude` if `claude` is installed
 
 Claude Code itself is not installed by this script: see <https://docs.claude.com/en/docs/claude-code/setup>.
 
