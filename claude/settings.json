@@ -1,0 +1,29 @@
+{
+  "model": "sonnet",
+  "enabledPlugins": {
+    "obsidian@obsidian-skills": true,
+    "swift-lsp@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "baoyu-skills": {
+      "source": {
+        "source": "github",
+        "repo": "JimLiu/baoyu-skills"
+      },
+      "autoUpdate": true
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      }
+    },
+    "agent-deck": {
+      "source": {
+        "source": "github",
+        "repo": "asheshgoplani/agent-deck"
+      }
+    }
+  },
+  "tui": "fullscreen"
+}

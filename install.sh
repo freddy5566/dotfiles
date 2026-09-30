@@ -1,139 +1,76 @@
 #!/bin/sh
+# Dotfiles installer: Ghostty + herdr + Claude Code (macOS).
+set -eu
 
-REPO_URL="https://github.com/jamfly/dotfiles"
-REPO_NAME="dotfiles"
+REPO_URL="https://github.com/freddy5566/dotfiles"
+INSTALL_DIRECTORY=${INSTALL_DIRECTORY:-"$HOME/.dotfiles"}
 
-INSTALL_DIRECTORY=${INSTALL_DIRECTORY:-"$HOME/.$REPO_NAME"}
-INSTALL_VERSION=${INSTALL_VERSION:-"master"}
+info() { printf '==> %s\n' "$1"; }
 
-askquestion() {
-    printf "$1 [y/N] "
-
-    read ans
-    case $ans in
-    [Yy*])
-        return $(true)
-        ;;
-    *)
-        return $(false)
-        ;;
-    esac
+# Symlink $1 (in repo) to $2 (in $HOME), backing up whatever is there.
+link() {
+    src=$1
+    dest=$2
+    mkdir -p "$(dirname "$dest")"
+    if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$src" ]; then
+        return
+    fi
+    if [ -e "$dest" ] || [ -L "$dest" ]; then
+        mv "$dest" "$dest.bak"
+        info "backed up $dest -> $dest.bak"
+    fi
+    ln -s "$src" "$dest"
+    info "linked $dest"
 }
 
-applyzsh() {
-    # Check zsh
-    if ! command -v zsh >/dev/null 2>&1; then
-        echo "zsh is not installed."
-        return $(false)
-    fi
+# Use this checkout if the script runs from inside one; otherwise clone.
+if [ -f "$(dirname "$0")/ghostty/config" ] 2>/dev/null; then
+    INSTALL_DIRECTORY=$(cd "$(dirname "$0")" && pwd)
+elif [ -d "$INSTALL_DIRECTORY/.git" ]; then
+    git -C "$INSTALL_DIRECTORY" pull --ff-only
+else
+    command -v git >/dev/null 2>&1 || { echo "git is required."; exit 1; }
+    git clone "$REPO_URL" "$INSTALL_DIRECTORY"
+fi
 
-    if [ -f $HOME/.zshrc ]; then
-        mv $HOME/.zshrc $HOME/.zshrc.bak
-    fi
+# Ghostty + font (Homebrew)
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew is required: https://brew.sh"
+    exit 1
+fi
+if [ ! -d /Applications/Ghostty.app ]; then
+    info "installing Ghostty"
+    brew install --cask ghostty
+fi
+if ! brew list --cask font-meslo-lg-nerd-font >/dev/null 2>&1; then
+    info "installing MesloLGS Nerd Font"
+    brew install --cask font-meslo-lg-nerd-font
+fi
 
-    if [ -f $HOME/.zimrc ]; then
-        mv $HOME/.zimrc $HOME/.zimrc.bak
-    fi
+# herdr
+if ! command -v herdr >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/herdr" ]; then
+    info "installing herdr"
+    curl -fsSL https://herdr.dev/install.sh | sh
+fi
 
-    # Install zim
-    if ! [ -d $HOME/.zim ]; then
-        if command -v curl >/dev/null 2>&1; then
-            zsh -c "$(curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh)"
-        else
-            zsh -c "$(wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh)"
-        fi
-    fi
+# Configs
+link "$INSTALL_DIRECTORY/ghostty/config" "$HOME/.config/ghostty/config"
+link "$INSTALL_DIRECTORY/herdr/config.toml" "$HOME/.config/herdr/config.toml"
 
-    echo "export DOTFILES=$INSTALL_DIRECTORY" >> $HOME/.zshrc
-    echo "source $INSTALL_DIRECTORY/zsh/.zshrc" >> $HOME/.zshrc
-    cp $INSTALL_DIRECTORY/zsh/.zimrc $HOME
-    # echo "source $INSTALL_DIRECTORY/zsh/.zimrc" >> $HOME/.zimrc
+# Claude Code settings are copied, not linked: Claude Code and herdr edit
+# this file themselves (hooks, auto mode), and that should stay per machine.
+if [ ! -f "$HOME/.claude/settings.json" ]; then
+    mkdir -p "$HOME/.claude"
+    cp "$INSTALL_DIRECTORY/claude/settings.json" "$HOME/.claude/settings.json"
+    info "copied Claude Code settings"
+else
+    info "~/.claude/settings.json exists; compare with: diff ~/.claude/settings.json $INSTALL_DIRECTORY/claude/settings.json"
+fi
 
-    echo "DEFAULT_USER=$USER" >> $HOME/.zshrc
+# herdr's Claude Code integration (adds its hook to ~/.claude/settings.json)
+if command -v claude >/dev/null 2>&1; then
+    PATH="$HOME/.local/bin:$PATH" herdr integration install claude || true
+fi
 
-    zsh -c "source ~/.zim/zimfw.zsh install"
-}
-
-applyvim() {
-    # Check vim
-    if ! command -v vim >/dev/null 2>&1; then
-        echo "vim is not installed."
-        return $(false)
-    fi
-
-    if [ -f $HOME/.vimrc ]; then
-        mv $HOME/.vimrc $HOME/.vimrc.bak
-    fi
-    echo "source $INSTALL_DIRECTORY/vim/.vimrc" >>$HOME/.vimrc
-}
-
-applynvim() {
-    # Check nvim
-    if ! command -v nvim >/dev/null 2>&1; then
-        echo "nvim is not installed."
-        return $(false)
-    fi
-
-		cd ~/.config && ln -s ~/.dotfiles/nvim .
-}
-
-applytmux() {
-    # Check tmux
-    if ! command -v tmux >/dev/null 2>&1; then
-        echo "tmux is not installed."
-        return $(false)
-    fi
-
-    if [ -f $HOME/.tmux.conf ]; then
-        mv $HOME/.tmux.conf $HOME/.tmux.conf.bak
-    fi
-    echo "source $INSTALL_DIRECTORY/tmux/.tmux.conf" >>$HOME/.tmux.conf
-}
-
-main() {
-    # Check Git
-    if ! command -v git >/dev/null 2>&1; then
-        echo "You must install git before using the installer."
-        return $(false)
-    fi
-
-    # Remove old one
-    if [ -d $INSTALL_DIRECTORY ]; then
-        rm -rf $INSTALL_DIRECTORY
-    fi
-
-    # Clone repo to local
-    git clone $REPO_URL $INSTALL_DIRECTORY
-    if [ $? != 0 ]; then
-        echo "Failed to clone $REPO_NAME."
-        return 1
-    fi
-    cd $INSTALL_DIRECTORY
-    git checkout $INSTALL_VERSION
-
-    # Apply the config of zsh
-    if askquestion "Do you want to apply the config of zsh?"; then
-        applyzsh
-    fi
-
-    # Apply the config of vim
-    if askquestion "Do you want to apply the config of vim?"; then
-        applyvim
-    fi
-
-    # Apply the config of neovim
-    if askquestion "Do you want to apply the config of neovim?"; then
-        applynvim
-    fi
-
-    # Apply the config of tmux
-    if askquestion "Do you want to apply the config of tmux?"; then
-        applytmux
-    fi
-
-    # Finished
-    echo
-    echo "Done! $REPO_NAME:$INSTALL_VERSION is ready to go! Restart your shell to use it."
-}
-
-main
+echo
+echo "Done! Open Ghostty and run: herdr"
