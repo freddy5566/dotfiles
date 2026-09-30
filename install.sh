@@ -1,5 +1,5 @@
 #!/bin/sh
-# Dotfiles installer: Ghostty + herdr + Claude Code (macOS).
+# Dotfiles installer: Ghostty + herdr + zsh + Claude Code (macOS).
 set -eu
 
 REPO_URL="https://github.com/freddy5566/dotfiles"
@@ -56,6 +56,24 @@ fi
 # Configs
 link "$INSTALL_DIRECTORY/ghostty/config" "$HOME/.config/ghostty/config"
 link "$INSTALL_DIRECTORY/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+
+# zsh (zim + powerlevel10k): ~/.zshrc sources the repo's zsh/.zshrc
+if command -v zsh >/dev/null 2>&1; then
+    if ! grep -qs "export DOTFILES=" "$HOME/.zshrc"; then
+        [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$HOME/.zshrc.bak"
+        {
+            echo "export DOTFILES=$INSTALL_DIRECTORY"
+            echo "source $INSTALL_DIRECTORY/zsh/.zshrc"
+        } >> "$HOME/.zshrc"
+        info "hooked zsh config into ~/.zshrc"
+    fi
+    if [ ! -d "$HOME/.zim" ]; then
+        info "installing zim"
+        curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+    fi
+    link "$INSTALL_DIRECTORY/zsh/.zimrc" "$HOME/.zimrc"
+    zsh -c "source ~/.zim/zimfw.zsh install"
+fi
 
 # Claude Code settings are copied, not linked: Claude Code and herdr edit
 # this file themselves (hooks, auto mode), and that should stay per machine.
