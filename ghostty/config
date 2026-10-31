@@ -29,3 +29,6 @@ palette = 15=#ffffff
 
 # Option acts as Alt/Meta (needed for tmux prefix M-a)
 macos-option-as-alt = true
+
+# Global hotkey: Opt+` toggles the quick (drop-down) terminal from any app
+keybind = global:alt+grave_accent=toggle_quick_terminal
